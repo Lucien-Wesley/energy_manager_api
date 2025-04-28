@@ -1,0 +1,27 @@
+
+
+services:
+  energy_copilot_app:
+    container_name: energy_copilot_app
+    image: wesley/energy_copilot_app:1.0.0
+    build: .
+    environment:
+      DATABASE_URL: "host=energy_copilot_db user=copilot password=energy dbname=copilotpostgres sslmode=disable"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - energy_copilot_db
+  energy_copilot_db:
+    container_name: energy_copilot_db
+    image: postgres:17.4
+    environment:
+      POSTGRES_PASSWORD: energy
+      POSTGRES_USER: copilot
+      POSTGRES_DB: copilotpostgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}
